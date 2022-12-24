@@ -15,20 +15,26 @@
 			#instructions {
 				width: 100%;
 			}
+			.wrapper {
+				padding: 20px;
+				width: 70%;
+			}
     </style>
   </head>
   <body>
-		<table id='instructions'>
-			<tr>
-				<td>
-					<h1 id='timer'>Box Breathing</h1>
-				</td>
-				<td align='right'>
-					<button id='startStop' type='button' class='ms-secondary'>Start</button>
-				</td>
-			</tr>
-		<table>
-	  <canvas id='drawing' width='2000' height='1000'></canvas>
+		<div class='wrapper'>
+			<table id='instructions'>
+				<tr>
+					<td>
+						<h1 id='timer'>Box Breathing</h1>
+					</td>
+					<td align='right'>
+						<button id='startStop' type='button' class='ms-secondary'>Start</button>
+					</td>
+				</tr>
+			<table>
+			<canvas id='drawing' width='2000' height='1000'></canvas>
+		</div>
 
     <br/>
 	
@@ -45,29 +51,29 @@
 				<div class="col-sm">
 					<div class="ms-form-group">
 						<label for='circleColor1'>Circle Color 1</label>
-						<input type='color' id="circleColor1">
+						<input type='color' id="circleColor1" name="circleColor1">
 					</div>
 					<div class="ms-form-group">
 						<label for='circleColor2'>Circle Color 2</label>
-						<input type='color' id="circleColor2">
+						<input type='color' id="circleColor2" name="circleColor2">
 					</div>
 					<div class="ms-form-group">
 						<label for='circleColor3'>Circle Color 3</label>
-						<input type='color' id="circleColor3">
+						<input type='color' id="circleColor3" name="circleColor3">
 					</div>
 					<div class="ms-form-group">
 						<label for='circleColor4'>Circle Color 4</label>
-						<input type='color' id="circleColor4">
+						<input type='color' id="circleColor4" name="circleColor4">
 					</div>
 				</div>
 				<div class="col-sm">
 					<div class="ms-form-group">
 						<label for='bgColor1'>Background Color 1</label>
-						<input type='color' id="bgColor1">
+						<input type='color' id="bgColor1" name="bgColor1">
 					</div>
 					<div class="ms-form-group">
 						<label for='bgColor2'>Background Color 2</label>
-						<input type='color' id="bgColor2">
+						<input type='color' id="bgColor2" name="bgColor2">
 					</div>
 				</div>
 			</div>
@@ -163,6 +169,7 @@
             run();
           };
         });
+				drawing.click(function() { startStop.trigger('click') });
                       
         function run() {
           timer = setInterval(function() {
