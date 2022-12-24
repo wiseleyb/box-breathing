@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Our Funky HTML Page</title>
+    <meta name="description" content="Our first page">
+    <meta name="keywords" content="html tutorial template">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <style>
+      #drawing {
+        width: 400px;
+        height: 200px;
+        border: solid 1px black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id='drawing'></canvas>
+
+    <br/>
+    <button id='startStop' type='button'>Start</button>
+    <div id='timer'></div>
+
+    <script>
+      $(document).ready(function() {
+        var timer;
+        var step = 0;
+        var circleWidth = 50;
+        var minCircleWidth = 5;
+        var seconds = 5;
+        var secondsLeft = seconds;
+        var interval = 100;
+        var stepsNeeded = seconds * 1000 / interval;
+        var stepDirection = stepsNeeded / (circleWidth - minCircleWidth);
+
+        var timerDiv = $('#timer')
+        var wait = false;
+
+        var x = 400;
+        var y = 200;
+        var circleX = (x / 2) - circleWidth;
+        var circleY = (y / 2) - (circleWidth / 2);
+
+        var c = document.getElementById("drawing");
+        var ctx = c.getContext("2d");
+        //var grd = ctx.createRadialGradient(75, 50, 5, 90, 60, 100);
+        var grd = ctx.createRadialGradient(circleX - 10, circleY - 10,
+                                           0,
+                                           circleX, circleY,
+                                           circleWidth * 2);
+        grd.addColorStop(0, "red");
+        grd.addColorStop(0.3, "orange");
+        grd.addColorStop(0.6, "yellow");
+        grd.addColorStop(1, "white");
+
+        resetBox();
+
+        ctx.beginPath();
+        ctx.arc(circleX, circleY, circleWidth, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        // Fill with gradient
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(circleX, circleY, circleWidth, 0, 2 * Math.PI);
+        ctx.fill();
+
+        $('#startStop').click(function() {
+          if ($('#startStop').html() == 'Stop') {
+            $('#startStop').html('Start');
+            clearInterval(timer);
+          } else {
+            $('#startStop').html('Stop');
+            run();
+          };
+        });
+                      
+        function run() {
+          timer = setInterval(function() {
+            secondsLeft -= interval / 1000;
+            updateTime();
+            if (wait) {
+              if (secondsLeft < 0) {
+                secondsLeft = seconds;
+                wait = false;
+              }
+            } else {
+              resetBox();
+
+              var circleSize = circleWidth - step;
+              if (
+                   ((circleSize < 5) && stepDirection > 0) 
+                   ||
+                   (step < 0 && stepDirection < 0)
+                 ) {
+                stepDirection = stepDirection * -1;
+                secondsLeft = seconds;
+                wait = true;
+              };
+
+              // Fill with gradient
+              ctx.fillStyle = grd;
+              ctx.beginPath();
+              ctx.arc(circleX, circleY, circleSize, 0, 2 * Math.PI);
+              ctx.fill();
+
+              step += stepDirection;
+            };
+          }, interval);
+        };
+
+        function resetBox() {
+          ctx.clearRect(0, 0, x, y);
+          var rgrd = ctx.createLinearGradient(0, 0, x, y);
+          rgrd.addColorStop(0, "blue");
+          rgrd.addColorStop(1, "white");
+          ctx.beginPath();
+          ctx.rect(0,0,x,y);
+          ctx.fillStyle = rgrd;
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(circleX, circleY, circleWidth, 0, 2 * Math.PI);
+          ctx.stroke();
+        };
+
+        function updateTime() {
+          //timerDiv.html(secondsLeft.toFixed(2));
+          if (secondsLeft > 0) {
+            timerDiv.html(Math.ceil(secondsLeft));
+          };
+        };
+      });
+    </script>
+  </body>
+</html>
