@@ -1,62 +1,147 @@
 <!doctype html>
-<html>
+<html lang="en" data-theme="dark">
   <head>
-    <title>Our Funky HTML Page</title>
-    <meta name="description" content="Our first page">
-    <meta name="keywords" content="html tutorial template">
+    <title>Box Breathing</title>
+    <meta name="description" content="Visual aid for box breathing method">
+    <meta name="keywords" content="box breathing">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="minstyle.io.min.css">
+		<script src="dark.min.js"></script>
     <style>
       #drawing {
-        width: 400px;
-        height: 200px;
         border: solid 1px black;
-      }
+        width: 100%;
+			}
+			#instructions {
+				width: 100%;
+			}
     </style>
   </head>
   <body>
-    <canvas id='drawing'></canvas>
+		<table id='instructions'>
+			<tr>
+				<td>
+					<h1 id='timer'>Box Breathing</h1>
+				</td>
+				<td align='right'>
+					<button id='startStop' type='button' class='ms-secondary'>Start</button>
+				</td>
+			</tr>
+		<table>
+	  <canvas id='drawing' width='2000' height='1000'></canvas>
 
     <br/>
-    <button id='startStop' type='button'>Start</button>
-    <div id='timer'></div>
+	
+		<h3>Settings</h3>
+    <form action="" method="get">
+			<div class="row">
+				<div class="ms-form-group">
+					<label for="seconds">Seconds:</label>
+					<input type="text" id="seconds" name="seconds">
+				</div>
+			<div>
+
+			<div class="row">
+				<div class="col-sm">
+					<div class="ms-form-group">
+						<label for='circleColor1'>Circle Color 1</label>
+						<input type='color' id="circleColor1">
+					</div>
+					<div class="ms-form-group">
+						<label for='circleColor2'>Circle Color 2</label>
+						<input type='color' id="circleColor2">
+					</div>
+					<div class="ms-form-group">
+						<label for='circleColor3'>Circle Color 3</label>
+						<input type='color' id="circleColor3">
+					</div>
+					<div class="ms-form-group">
+						<label for='circleColor4'>Circle Color 4</label>
+						<input type='color' id="circleColor4">
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="ms-form-group">
+						<label for='bgColor1'>Background Color 1</label>
+						<input type='color' id="bgColor1">
+					</div>
+					<div class="ms-form-group">
+						<label for='bgColor2'>Background Color 2</label>
+						<input type='color' id="bgColor2">
+					</div>
+				</div>
+			</div>
+
+      <input type="submit" value="Update" class='ms-secondary'>
+    </form>
+
+		<h3>Info</h3>
+		<p>
+			<a href='https://www.healthline.com/health/box-breathing' target='_blank'>What is box breathing?</a>
+		</p>
 
     <script>
       $(document).ready(function() {
+				var drawing = $('#drawing');
+    		var width = drawing.width();
+				var height = width / 2;
+				console.log('html w/h:', width, height);
+    		drawing.css('height', height);
+
+        var c = document.getElementById("drawing");
+        var ctx = c.getContext("2d");
+
+				$('#seconds').val(params('seconds', 5));
+
+				var x = ctx.canvas.width;
+				var y = ctx.canvas.height;
+
         var timer;
         var step = 0;
-        var circleWidth = 50;
-        var minCircleWidth = 5;
-        var seconds = 5;
+        var circleWidth = x / 4.5;
+        var seconds = parseInt($('#seconds').val());
         var secondsLeft = seconds;
         var interval = 100;
         var stepsNeeded = seconds * 1000 / interval;
-        var stepDirection = stepsNeeded / (circleWidth - minCircleWidth);
+        var stepDirection = circleWidth / stepsNeeded;
+				console.log('Steps: ', stepsNeeded, stepDirection, seconds);
 
         var timerDiv = $('#timer')
         var wait = false;
 
-        var x = 400;
-        var y = 200;
-        var circleX = (x / 2) - circleWidth;
-        var circleY = (y / 2) - (circleWidth / 2);
+        var circleX = (x / 2); // - circleWidth;
+        var circleY = (y / 2); // - (circleWidth / 2);
+				console.log('Dimensions: ', x, y, circleWidth, circleX, circleY);
 
-        var c = document.getElementById("drawing");
-        var ctx = c.getContext("2d");
-        //var grd = ctx.createRadialGradient(75, 50, 5, 90, 60, 100);
+				var bgColor1 = params('bgColor1', '#1b1bff');
+        var bgColor2 = params('bgColor2', '#ffffff');
+				var circleColor1 = params('circleColor1', '#ff0000');
+				var circleColor2 = params('circleColor2', '#ffa500');
+				var circleColor3 = params('circleColor3', '#ffff00');
+				var circleColor4 = params('circleColor4', '#ffffff');
+
+				$('#bgColor1').val(bgColor1);
+				$('#bgColor1Val').val(bgColor1);
+				$('#bgColor2').val(bgColor2);
+				$('#circleColor1').val(circleColor1);
+				$('#circleColor2').val(circleColor2);
+				$('#circleColor3').val(circleColor3);
+				$('#circleColor4').val(circleColor4);
+
         var grd = ctx.createRadialGradient(circleX - 10, circleY - 10,
                                            0,
                                            circleX, circleY,
                                            circleWidth * 2);
-        grd.addColorStop(0, "red");
-        grd.addColorStop(0.3, "orange");
-        grd.addColorStop(0.6, "yellow");
-        grd.addColorStop(1, "white");
+        grd.addColorStop(0, circleColor1);
+        grd.addColorStop(0.3, circleColor2);
+        grd.addColorStop(0.6, circleColor3);
+        grd.addColorStop(1, circleColor4);
+
+				var rgrd = ctx.createLinearGradient(0, 0, x, y);
+				rgrd.addColorStop(0, bgColor1);
+				rgrd.addColorStop(1, bgColor2);
 
         resetBox();
-
-        ctx.beginPath();
-        ctx.arc(circleX, circleY, circleWidth, 0, 2 * Math.PI);
-        ctx.stroke();
 
         // Fill with gradient
         ctx.fillStyle = grd;
@@ -64,12 +149,17 @@
         ctx.arc(circleX, circleY, circleWidth, 0, 2 * Math.PI);
         ctx.fill();
 
-        $('#startStop').click(function() {
-          if ($('#startStop').html() == 'Stop') {
-            $('#startStop').html('Start');
+				var startStop = $('#startStop');
+        startStop.click(function() {
+          if (startStop.html() == 'Stop') {
+            startStop.html('Start');
+						startStop.removeClass('ms-primary');
+						startStop.addClass('ms-secondary');
             clearInterval(timer);
           } else {
-            $('#startStop').html('Stop');
+            startStop.html('Stop');
+						startStop.removeClass('ms-secondary');
+						startStop.addClass('ms-primary');
             run();
           };
         });
@@ -88,7 +178,7 @@
 
               var circleSize = circleWidth - step;
               if (
-                   ((circleSize < 5) && stepDirection > 0) 
+                   ((circleSize < Math.abs(stepDirection)) && stepDirection > 0) 
                    ||
                    (step < 0 && stepDirection < 0)
                  ) {
@@ -110,25 +200,48 @@
 
         function resetBox() {
           ctx.clearRect(0, 0, x, y);
-          var rgrd = ctx.createLinearGradient(0, 0, x, y);
-          rgrd.addColorStop(0, "blue");
-          rgrd.addColorStop(1, "white");
           ctx.beginPath();
           ctx.rect(0,0,x,y);
           ctx.fillStyle = rgrd;
           ctx.fill();
+          outlineCircle();
+        };
 
+        function outlineCircle() {
           ctx.beginPath();
-          ctx.arc(circleX, circleY, circleWidth, 0, 2 * Math.PI);
+          ctx.arc(circleX, circleY, circleWidth + 2, 0, 2 * Math.PI);
           ctx.stroke();
         };
 
         function updateTime() {
-          //timerDiv.html(secondsLeft.toFixed(2));
           if (secondsLeft > 0) {
-            timerDiv.html(Math.ceil(secondsLeft));
+						var sInstruction = 'Breath';
+						if (wait) { 
+							sInstruction = 'Hold';
+						} else {
+							var sdir = 'in';
+							if (stepDirection > 0) { sdir = 'out' };
+							sInstruction = sInstruction + ' ' + sdir;
+						};
+            timerDiv.html(sInstruction + ': ' + Math.ceil(secondsLeft));
           };
         };
+
+        function params(sParam, sDefault) {
+					var sPageURL = window.location.search.substring(1),
+							sURLVariables = sPageURL.split('&'),
+							sParameterName,
+							i;
+
+					for (i = 0; i < sURLVariables.length; i++) {
+						sParameterName = sURLVariables[i].split('=');
+
+						if (sParameterName[0] === sParam) {
+							return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+						}
+					}
+					return sDefault;
+				};
       });
     </script>
   </body>
