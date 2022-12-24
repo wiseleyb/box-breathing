@@ -34,6 +34,8 @@
 				</tr>
 			<table>
 			<canvas id='drawing' width='2000' height='1000'></canvas>
+			<br/>
+			<p><a href='#' id='full-screen'>Full Screen</a></p>
 		</div>
 
     <br/>
@@ -114,6 +116,7 @@
 
         var timerDiv = $('#timer')
         var wait = false;
+				var fullScreen = false;
 
         var circleX = (x / 2); // - circleWidth;
         var circleY = (y / 2); // - (circleWidth / 2);
@@ -233,6 +236,20 @@
             timerDiv.html(sInstruction + ': ' + Math.ceil(secondsLeft));
           };
         };
+
+				$('#full-screen').click(function(e) {
+					e.preventDefault();
+					var elem = document.querySelector("#drawing");
+
+					elem.requestFullscreen()
+						.then(function() {
+							fullScreen = true;
+						})
+						.catch(function(error) {
+							fullScreen = false;
+							alert("Full-screen couldn't be started");
+						});
+				});
 
         function params(sParam, sDefault) {
 					var sPageURL = window.location.search.substring(1),
