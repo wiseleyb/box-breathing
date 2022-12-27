@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+    <script src="breath.js"></script>
+		<link rel="stylesheet" type="text/css" href="minstyle.io.min.css">
+		<!--script src="dark.min.js"></script-->
+    <link rel="stylesheet" type="text/css" href="breath.css">
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id='breathCanvasDiv'></div>
+    <div class='settings-form-div'>
+      <form action="" method="get">
+        <div class="row">
+          <div class="ms-form-group">
+            <label>Customize steps by using {in/hold/out}-{seconds} separated by commas. Add as many steps as you like.</label>
+            <input id='steps' name='steps' type="text" value="in-5,hold-3,out-2,hold-2"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 ms-form-group">
+            <label>Background 1</label>
+						<input type='color' id="colorBackground1" name="colorBackground1"/>
+          </div>
+          <div class="col-sm-6 ms-form-group">
+            <label>Background 2</label>
+						<input type='color' id="colorBackground2" name="colorBackground2"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 ms-form-group">
+            <label>Circle 1</label>
+						<input type='color' id="colorCircle1" name="colorCircle1"/>
+          </div>
+          <div class="col-sm-6 ms-form-group">
+            <label>Circle 2</label>
+						<input type='color' id="colorCircle2" name="colorCircle2"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 ms-form-group">
+            <label>Font Color</label>
+						<input type='color' id="colorFont" name="colorFont"/>
+          </div>
+          <div class="col-sm-6 ms-form-group">
+            <label>Text area background color</label>
+						<input type='color' id="colorTextBG" name="colorTextBG"/>
+          </div>
+        </div>
+        <input type="submit" value="Update" class='ms-secondary'/>
+      </form>
+     </div>
+  </body>
+</html>
